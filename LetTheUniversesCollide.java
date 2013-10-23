@@ -2,7 +2,7 @@
  * File Name     : LetTheUniversesCollide.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Wed 23 Oct 2013 08:13:45 PM CEST
+ * Last Modified : Wed 23 Oct 2013 08:56:44 PM CEST
  * Created By    :
  *
  */
@@ -224,6 +224,30 @@ public class LetTheUniversesCollide {
         enumKey = dict.keys();
         while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
           System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
+        }
+
+
+
+        //find a Hash
+        String findKey = new String();
+
+        findKey = ltuc.hash;
+
+        if (wordlist.containsKey(findKey)) {
+          System.out.println("Found in Table: hash: " + findKey + " maps to password: " + wordlist.get(findKey));
+        } else {
+          System.out.println("Not found. Let us guess till we find it ...");
+          while (i < 0xFFFF) {
+
+            ltuc = new LetTheUniversesCollide();
+            ltuc.truncate();
+            if (ltuc.hash == findKey) {
+              System.out.println("hash: " + findKey + " " + ltuc.hash + " maps to password: " + ltuc.password);
+              i = 0xFFFF;
+            } else {
+            i++;
+            }
+          }
         }
 
 
