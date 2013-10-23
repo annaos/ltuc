@@ -2,7 +2,7 @@
  * File Name     : LetTheUniversesCollide.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Wed 23 Oct 2013 02:15:36 PM CEST
+ * Last Modified : Wed 23 Oct 2013 08:13:45 PM CEST
  * Created By    :
  *
  */
@@ -103,14 +103,129 @@
  *
  */
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.util.Hashtable;
+import java.util.UUID;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Enumeration;
+import java.io.OutputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 public class LetTheUniversesCollide {
+	
+
+	String password;
+	String hash;
+
+  	LetTheUniversesCollide () {
+	  // http://en.wikipedia.org/wiki/Universally_unique_identifier#Random_UUID_probability_of_duplicates 
+	  password = UUID.randomUUID().toString();
+	  password = password.substring(28,password.length());      //8byte Kennwort
+	  try {
+		MessageDigest md = MessageDigest.getInstance("SHA-1");
+		md.update(password.getBytes());
+		byte[] byteDigest = md.digest();
+		hash = bytesToHex(byteDigest);
+	  } catch (NoSuchAlgorithmException e) {
+		System.out.println("Exception: " + e);
+	  }
+	  
+	}
+
+	void truncate() {
+	  hash = hash.substring(36,hash.length());
+
+	}
+
+
+	public static String bytesToHex(byte[] b) {
+	  char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
+				  '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	  StringBuffer buf = new StringBuffer();
+	  for (int j=0; j<b.length; j++) {
+		buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
+		buf.append(hexDigit[b[j] & 0x0f]);
+	  }
+	  return buf.toString();
+	}
+
 	public static void main( String[] args ) {
-		System.out.println("Hello World!");	
+
+   		LetTheUniversesCollide ltuc = new LetTheUniversesCollide();
+
+		//System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);	
+		ltuc.truncate();
+		//System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);	
+
+		Hashtable<String, String> wordlist = new Hashtable<String, String>();
+
+		int i = 0;
+        
+        while (i < 0xFFFF) {
+
+   		  ltuc = new LetTheUniversesCollide();
+          ltuc.truncate();
+
+          //System.out.println("Size of Hashtable: " + wordlist.size());
+          //if (!wordlist.containsKey(ltuc.hash)) {
+          wordlist.put(ltuc.hash, ltuc.password);
+          i++;
+          //System.out.println("Size of Hashtable: " + wordlist.size());
+          //}
+		}
+
+        Enumeration enumValue = wordlist.elements();
+        Enumeration enumKey = wordlist.keys();
+
+        while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
+          System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
+        }
+
+        //System.out.println("Size of Hashtable: " + wordlist.size());
+
+        //Save File
+        try {
+          OutputStream outputStream = new FileOutputStream("table");
+
+          ObjectOutputStream objectOutput = new ObjectOutputStream(outputStream);
+
+          objectOutput.writeObject(wordlist);
+
+          objectOutput.close();
+          outputStream.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+
+        Hashtable<String, String> dict = new Hashtable<String, String>();
+
+        //Read File
+        try {
+          FileInputStream inputStream = new FileInputStream("table");
+
+          ObjectInputStream objectInput = new ObjectInputStream(inputStream);
+
+          dict = (Hashtable) objectInput.readObject();
+
+          objectInput.close();
+          inputStream.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+
+        enumValue = dict.elements();
+        enumKey = dict.keys();
+        while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
+          System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
+        }
+
+
 	}
 }
