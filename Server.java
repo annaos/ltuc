@@ -2,7 +2,7 @@
  * File Name     : Server.java
  * Purpose       :
  * Creation Date : 26-10-2013
- * Last Modified : Sat 26 Oct 2013 01:42:08 PM CEST
+ * Last Modified : Sat 26 Oct 2013 01:44:58 PM CEST
  * Created By    :
  *
  */
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 
 public class Server {
-	public static void main( String[] args ) {
-		System.out.println("Hello World!");	
-	}
+    public static void main( String[] args ) {
+        System.out.println("Hello World!"); 
+    }
 }

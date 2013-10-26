@@ -2,7 +2,7 @@
  * File Name     : Terminal.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Wed 23 Oct 2013 08:30:34 PM CEST
+ * Last Modified : Sat 26 Oct 2013 01:45:03 PM CEST
  * Created By    :
  *
  */
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 
 public class Terminal {
-	public static void main( String[] args ) {
-		System.out.println("Hello World!");	
-	}
+    public static void main( String[] args ) {
+        System.out.println("Hello World!"); 
+    }
 }

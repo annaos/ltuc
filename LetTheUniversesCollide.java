@@ -2,7 +2,7 @@
  * File Name     : LetTheUniversesCollide.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Thu 24 Oct 2013 01:48:00 PM CEST
+ * Last Modified : Sat 26 Oct 2013 01:44:50 PM CEST
  * Created By    :
  *
  */
@@ -42,11 +42,11 @@
  * Generiere zufaellige Kennwoerter und hashe sie
  * speichere diese in Hashtable mit 2^16 Eintraegen a 4 Byte (Kennwort) 
  * Speicherplatzbedarf: (Output max. 2^32 Mpeglichkeiten 
- * 						-> somit ist nach 2^16 Eintraegen eine Kollision wahrscheinlich)
+ *                      -> somit ist nach 2^16 Eintraegen eine Kollision wahrscheinlich)
  *
- * 						2^16 * 2^5 Bit = 2^21 Bit
- * 							   2^18 Byte  
- *						ca.    2 Megabyte
+ *                      2^16 * 2^5 Bit = 2^21 Bit
+ *                             2^18 Byte  
+ *                      ca.    2 Megabyte
  * 
  * 
  * Opfer:
@@ -58,39 +58,39 @@
  * 
  *
  *
- *	Angreifer												Opfer
- * ######################################	               	############################################################
- * #									 #   				#                                                          #
- * #    Tabelle:						 #   				#			Authentifizierung:			Server:            #
- * #	------------------------------	 #   				#			-------------------			-------            #
- * #	Eintrag		 Hashwert Kennwort	 #   				#			####################        ##############     #
- * #	0			 ######## ########	 #   				#			# Benutzername     #        # vergleiche #     #
- * #	1			 ######## ########	 #   				#			####################        # Hash       #     #
- * #	2			 ######## ########	 #   				#			# Kennwort         #        #            #     #
- * #	3			 ######## ########	 #   				#			####################        # gewaehre   #     #
- * #	4			 ######## ########	 #   				#			# generierter Hash # -----> # Zugriff    #     #
- * #	5			 ######## ########	 #   				#			####################   |    ##############     #
- * #	6			 ######## ########	 #   				#			                       |                       #
- * #	.				  .				 #   				#                                  |                       #
- * #	.				  .				 #   				#                                  |                       #
- * #	.				  .				 #   				#                                  |                       #
- * #	.				  .				 #   				#                                  |                       #
- * #	2^16 - 1	 ######## ########	 #   				###################################|########################
- * #									 #													   |
- * #									 #													   |
- * #######################################													   |
- * 																							   |
- * 					^																		   |
- * 					|																		   |
- * 					|																		   |
- * 					|--------------------------------------------------------------------------
+ *  Angreifer                                               Opfer
+ * ######################################                   ############################################################
+ * #                                     #                  #                                                          #
+ * #    Tabelle:                         #                  #           Authentifizierung:          Server:            #
+ * #    ------------------------------   #                  #           -------------------         -------            #
+ * #    Eintrag      Hashwert Kennwort   #                  #           ####################        ##############     #
+ * #    0            ######## ########   #                  #           # Benutzername     #        # vergleiche #     #
+ * #    1            ######## ########   #                  #           ####################        # Hash       #     #
+ * #    2            ######## ########   #                  #           # Kennwort         #        #            #     #
+ * #    3            ######## ########   #                  #           ####################        # gewaehre   #     #
+ * #    4            ######## ########   #                  #           # generierter Hash # -----> # Zugriff    #     #
+ * #    5            ######## ########   #                  #           ####################   |    ##############     #
+ * #    6            ######## ########   #                  #                                  |                       #
+ * #    .                 .              #                  #                                  |                       #
+ * #    .                 .              #                  #                                  |                       #
+ * #    .                 .              #                  #                                  |                       #
+ * #    .                 .              #                  #                                  |                       #
+ * #    2^16 - 1     ######## ########   #                  ###################################|########################
+ * #                                     #                                                     |
+ * #                                     #                                                     |
+ * #######################################                                                     |
+ *                                                                                             |
+ *                  ^                                                                          |
+ *                  |                                                                          |
+ *                  |                                                                          |
+ *                  |--------------------------------------------------------------------------
  *  
  *   Vergleiche erhaltenen Hash
  *   mit denen in der Tabelle
  *   Bei Treffer:
- *   	sende Kennwort
+ *      sende Kennwort
  *   sonst:
- *   	warte auf naechsten Hash
+ *      warte auf naechsten Hash
  *  
  *
  *
@@ -117,58 +117,58 @@ import java.io.IOException;
 
 
 public class LetTheUniversesCollide {
-	
+    
 
-	String password;
-	String hash;
+    String password;
+    String hash;
 
-  	LetTheUniversesCollide () {
-	  // http://en.wikipedia.org/wiki/Universally_unique_identifier#Random_UUID_probability_of_duplicates 
-	  password = UUID.randomUUID().toString();
-	  password = password.substring(28,password.length());      //8byte Kennwort
-	  try {
-		MessageDigest md = MessageDigest.getInstance("SHA-1");
-		md.update(password.getBytes());
-		byte[] byteDigest = md.digest();
-		hash = bytesToHex(byteDigest);
-	  } catch (NoSuchAlgorithmException e) {
-		System.out.println("Exception: " + e);
-	  }
-	  
-	}
+    LetTheUniversesCollide () {
+      // http://en.wikipedia.org/wiki/Universally_unique_identifier#Random_UUID_probability_of_duplicates 
+      password = UUID.randomUUID().toString();
+      password = password.substring(28,password.length());      //8byte Kennwort
+      try {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        md.update(password.getBytes());
+        byte[] byteDigest = md.digest();
+        hash = bytesToHex(byteDigest);
+      } catch (NoSuchAlgorithmException e) {
+        System.out.println("Exception: " + e);
+      }
+      
+    }
 
-	void truncate() {
-	  hash = hash.substring(32,hash.length());
+    void truncate() {
+      hash = hash.substring(32,hash.length());
 
-	}
+    }
 
 
-	public static String bytesToHex(byte[] b) {
-	  char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-				  '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-	  StringBuffer buf = new StringBuffer();
-	  for (int j=0; j<b.length; j++) {
-		buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
-		buf.append(hexDigit[b[j] & 0x0f]);
-	  }
-	  return buf.toString();
-	}
+    public static String bytesToHex(byte[] b) {
+      char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
+                  '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+      StringBuffer buf = new StringBuffer();
+      for (int j=0; j<b.length; j++) {
+        buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
+        buf.append(hexDigit[b[j] & 0x0f]);
+      }
+      return buf.toString();
+    }
 
-	public static void main( String[] args ) {
+    public static void main( String[] args ) {
 
-   		LetTheUniversesCollide ltuc = new LetTheUniversesCollide();
+        LetTheUniversesCollide ltuc = new LetTheUniversesCollide();
 
-		//System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);	
-		ltuc.truncate();
-		//System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);	
+        //System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);   
+        ltuc.truncate();
+        //System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);   
 
-		Hashtable<String, String> wordlist = new Hashtable<String, String>();
+        Hashtable<String, String> wordlist = new Hashtable<String, String>();
 
-		int i = 0;
+        int i = 0;
         
         while (i < 0xFFFF) {
 
-   		  ltuc = new LetTheUniversesCollide();
+          ltuc = new LetTheUniversesCollide();
           ltuc.truncate();
 
           //System.out.println("Size of Hashtable: " + wordlist.size());
@@ -177,7 +177,7 @@ public class LetTheUniversesCollide {
           i++;
           //System.out.println("Size of Hashtable: " + wordlist.size());
           //}
-		}
+        }
 
         Enumeration enumValue = wordlist.elements();
         Enumeration enumKey = wordlist.keys();
@@ -252,5 +252,5 @@ public class LetTheUniversesCollide {
 
         System.out.println("Size of Hashtable: " + wordlist.size());
 
-	}
+    }
 }
