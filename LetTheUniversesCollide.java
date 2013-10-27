@@ -2,7 +2,7 @@
  * File Name     : LetTheUniversesCollide.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Sun 27 Oct 2013 12:36:04 PM CET
+ * Last Modified : Sun 27 Oct 2013 06:18:44 PM CET
  * Created By    :
  *
  */
@@ -84,6 +84,29 @@
  *                  |                                                                          |
  *                  |                                                                          |
  *                  |--------------------------------------------------------------------------
+ *
+ * Angreifer:############################                   Terminal:#########################
+ * ######################################                   ##################################
+ * ######################################              |--->##Password########################
+ * ######################################              |    #####|############################
+ * ######################################              |    #####|SHA1########################
+ * ######################################              |    #####|############################
+ * ######################################              |    #####v############################
+ * ########Precomputation################              |    ##Hash (4 Byte)###################
+ * ###########Table######## #############              |         |              ^             
+ * ########## Hash:Password #############----------------------->|              |True/        
+ * ########## ############# #############              |         |              |False        
+ * ########## ############# ##Lookup#####              |         v              |             
+ * ########## ############# ###Found!####--------------|    Server:#############|#############
+ * ########## ############# #############                   ####################|#############
+ * ########## ############# ###NFound!###                   ##Lookup############|#############
+ * ##########               ##Generate###                   #######Compare#-----|#############
+ * ###########################bigger#####                   ##################################
+ * ###########################table######                   ##################################
+ * ######################################                   ##################################
+ * ######################################                   ##################################
+ * ######################################                   ##################################
+ * ######################################                   ##################################
  *  
  *   Vergleiche erhaltenen Hash
  *   mit denen in der Tabelle
@@ -95,18 +118,15 @@
  *
  *
  * ToDo:
- * generateRandomPassword
- * hash
- * save
- * compare
- * send
+ * generateRandomPassword x
+ * hash x
+ * save x
+ * compare x
+ * send x
  *
  */
 
 import java.util.Hashtable;
-import java.util.UUID;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.io.OutputStream;
 import java.io.ObjectOutputStream;
@@ -123,7 +143,6 @@ public class LetTheUniversesCollide {
         HashPass ltuc = new HashPass();
 
         //System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);   
-        ltuc.truncate();
         //System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);   
 
         Hashtable<String, String> wordlist = new Hashtable<String, String>();
@@ -131,90 +150,84 @@ public class LetTheUniversesCollide {
         int i = 0;
         
         while (i < 0xFFFF) {
+            ltuc = new HashPass();
 
-          ltuc = new HashPass();
-          ltuc.truncate();
-
-          //System.out.println("Size of Hashtable: " + wordlist.size());
-          //if (!wordlist.containsKey(ltuc.hash)) {
-          wordlist.put(ltuc.hash, ltuc.password);
-          i++;
-          //System.out.println("Size of Hashtable: " + wordlist.size());
-          //}
+            //System.out.println("Size of Hashtable: " + wordlist.size());
+            //if (!wordlist.containsKey(ltuc.hash)) {
+            wordlist.put(ltuc.getHash(), ltuc.getPassword());
+            i++;
+            //System.out.println("Size of Hashtable: " + wordlist.size());
+            //}
         }
 
         Enumeration enumValue = wordlist.elements();
         Enumeration enumKey = wordlist.keys();
 
         while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
-          System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
+            System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
         }
 
         //System.out.println("Size of Hashtable: " + wordlist.size());
 
         //Save File
         try {
-          OutputStream outputStream = new FileOutputStream("table");
+            OutputStream outputStream = new FileOutputStream("table");
 
-          ObjectOutputStream objectOutput = new ObjectOutputStream(outputStream);
+            ObjectOutputStream objectOutput = new ObjectOutputStream(outputStream);
 
-          objectOutput.writeObject(wordlist);
+            objectOutput.writeObject(wordlist);
 
-          objectOutput.close();
-          outputStream.close();
+            objectOutput.close();
+            outputStream.close();
         } catch (IOException e) {
-          e.printStackTrace();
+            e.printStackTrace();
         }
 
         Hashtable<String, String> dict = new Hashtable<String, String>();
 
         //Read File
         try {
-          FileInputStream inputStream = new FileInputStream("table");
+            FileInputStream inputStream = new FileInputStream("table");
 
-          ObjectInputStream objectInput = new ObjectInputStream(inputStream);
+            ObjectInputStream objectInput = new ObjectInputStream(inputStream);
 
-          dict = (Hashtable) objectInput.readObject();
+            dict = (Hashtable) objectInput.readObject();
 
-          objectInput.close();
-          inputStream.close();
+            objectInput.close();
+            inputStream.close();
         } catch (IOException e) {
-          e.printStackTrace();
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-          e.printStackTrace();
+            e.printStackTrace();
         }
 
         enumValue = dict.elements();
         enumKey = dict.keys();
         while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
-          System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
+            System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
         }
-
-
 
         //find a Hash
         String findKey = new String();
 
-        findKey = ltuc.hash;
+        findKey = ltuc.getHash();
 
         if (wordlist.containsKey(findKey)) {
-          System.out.println("Found in Table: hash: " + findKey + " maps to password: " + wordlist.get(findKey));
+            System.out.println("Found in Table: hash: " + findKey + " maps to password: " + wordlist.get(findKey));
         } else {
-          System.out.println("Not found. Let us guess till we find it ...");
-          while (i < 0xFFFF) {
+            System.out.println("Not found. Let us guess till we find it ...");
 
-            ltuc = new HashPass();
-            ltuc.truncate();
-            if (ltuc.hash == findKey) {
-              System.out.println("hash: " + findKey + " " + ltuc.hash + " maps to password: " + ltuc.password);
-              i = 0xFFFF;
-            } else {
-            i++;
+            while (i < 0xFFFF) {
+                ltuc = new HashPass();
+                if (ltuc.getHash() == findKey) {
+                    System.out.println("hash: " + findKey + " " + ltuc.getHash() + " maps to password: " + ltuc.getPassword());
+                    i = 0xFFFF;
+                } else {
+                    i++;
+                }
             }
-          }
         }
 
         System.out.println("Size of Hashtable: " + wordlist.size());
-
     }
 }
