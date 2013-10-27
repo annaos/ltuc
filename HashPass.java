@@ -1,0 +1,49 @@
+/**
+ * File Name     : HashPass.java
+ * Purpose       :
+ * Creation Date : 27-10-2013
+ * Last Modified : Sun 27 Oct 2013 12:36:15 PM CET
+ * Created By    :
+ *
+ */
+
+
+import java.io.*;
+
+
+public class HashPass {
+
+    String password;
+    String hash;
+
+    HashPass () {
+      // http://en.wikipedia.org/wiki/Universally_unique_identifier#Random_UUID_probability_of_duplicates 
+      password = UUID.randomUUID().toString();
+      password = password.substring(28,password.length());      //8byte Kennwort
+      try {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        md.update(password.getBytes());
+        byte[] byteDigest = md.digest();
+        hash = bytesToHex(byteDigest);
+      } catch (NoSuchAlgorithmException e) {
+        System.out.println("Exception: " + e);
+      }
+      
+    }
+
+    void truncate() {
+      hash = hash.substring(32,hash.length());
+
+    }
+
+    public static String bytesToHex(byte[] b) {
+      char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
+                  '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+      StringBuffer buf = new StringBuffer();
+      for (int j=0; j<b.length; j++) {
+        buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
+        buf.append(hexDigit[b[j] & 0x0f]);
+      }
+      return buf.toString();
+    }
+}

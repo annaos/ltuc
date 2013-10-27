@@ -2,7 +2,7 @@
  * File Name     : LetTheUniversesCollide.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Sat 26 Oct 2013 01:44:50 PM CEST
+ * Last Modified : Sun 27 Oct 2013 12:36:04 PM CET
  * Created By    :
  *
  */
@@ -117,46 +117,10 @@ import java.io.IOException;
 
 
 public class LetTheUniversesCollide {
-    
-
-    String password;
-    String hash;
-
-    LetTheUniversesCollide () {
-      // http://en.wikipedia.org/wiki/Universally_unique_identifier#Random_UUID_probability_of_duplicates 
-      password = UUID.randomUUID().toString();
-      password = password.substring(28,password.length());      //8byte Kennwort
-      try {
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
-        md.update(password.getBytes());
-        byte[] byteDigest = md.digest();
-        hash = bytesToHex(byteDigest);
-      } catch (NoSuchAlgorithmException e) {
-        System.out.println("Exception: " + e);
-      }
-      
-    }
-
-    void truncate() {
-      hash = hash.substring(32,hash.length());
-
-    }
-
-
-    public static String bytesToHex(byte[] b) {
-      char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                  '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-      StringBuffer buf = new StringBuffer();
-      for (int j=0; j<b.length; j++) {
-        buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
-        buf.append(hexDigit[b[j] & 0x0f]);
-      }
-      return buf.toString();
-    }
 
     public static void main( String[] args ) {
 
-        LetTheUniversesCollide ltuc = new LetTheUniversesCollide();
+        HashPass ltuc = new HashPass();
 
         //System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);   
         ltuc.truncate();
@@ -168,7 +132,7 @@ public class LetTheUniversesCollide {
         
         while (i < 0xFFFF) {
 
-          ltuc = new LetTheUniversesCollide();
+          ltuc = new HashPass();
           ltuc.truncate();
 
           //System.out.println("Size of Hashtable: " + wordlist.size());
@@ -239,7 +203,7 @@ public class LetTheUniversesCollide {
           System.out.println("Not found. Let us guess till we find it ...");
           while (i < 0xFFFF) {
 
-            ltuc = new LetTheUniversesCollide();
+            ltuc = new HashPass();
             ltuc.truncate();
             if (ltuc.hash == findKey) {
               System.out.println("hash: " + findKey + " " + ltuc.hash + " maps to password: " + ltuc.password);
