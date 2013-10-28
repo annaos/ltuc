@@ -2,7 +2,7 @@
  * File Name     : LetTheUniversesCollide.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Sun 27 Oct 2013 11:14:51 PM CET
+ * Last Modified : Mon 28 Oct 2013 06:16:11 PM CET
  * Created By    :
  *
  */
@@ -130,40 +130,60 @@ import java.util.Hashtable;
 import java.util.Enumeration;
 import java.io.*;
 import java.net.*;
+import java.lang.*;
 
 
 public class LetTheUniversesCollide {
 
-    public static void main( String[] args ) throws IOException {
+    public static void main(String[] args) throws IOException {
 
         HashPass ltuc = new HashPass();
 
-        //System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);   
-        //System.out.println("password " + ltuc.password + " - " + "hash: " + ltuc.hash);   
-
         Hashtable<String, String> wordlist = new Hashtable<String, String>();
+
+        int size = 0;
+
+        System.out.println( "args = " + java.util.Arrays.toString( args ) );
+
+        if (args.length == 0) {
+            size = 0xFFFFF;             // 2^20
+        } else {
+            try {
+                size = new Integer(args[0]);
+            } catch (Exception e) {
+                size = 0xFFFFF;             // 2^20
+            }
+        }
 
         int i = 0;
         
-        while (i < 0xFFFF) {
+        long startTime = System.currentTimeMillis();
+
+        while (i < size) {
             ltuc = new HashPass();
 
             //System.out.println("Size of Hashtable: " + wordlist.size());
-            //if (!wordlist.containsKey(ltuc.hash)) {
-            wordlist.put(ltuc.getHash(), ltuc.getPassword());
-            i++;
+            if (!wordlist.containsKey(ltuc.hash)) {
+                wordlist.put(ltuc.getHash(), ltuc.getPassword());
+                i++;
             //System.out.println("Size of Hashtable: " + wordlist.size());
-            //}
+            }
         }
 
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("Generating Hashtable took " + (endTime - startTime) + " milliseconds.");
+
+/*
         Enumeration enumValue = wordlist.elements();
         Enumeration enumKey = wordlist.keys();
-
         while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
             System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
         }
-
+*/
         //System.out.println("Size of Hashtable: " + wordlist.size());
+
+        startTime = System.currentTimeMillis();
 
         //Save File
         try {
@@ -179,7 +199,14 @@ public class LetTheUniversesCollide {
             e.printStackTrace();
         }
 
+        endTime = System.currentTimeMillis();
+
+        System.out.println("Saving Hashtable took " + (endTime - startTime) + " milliseconds.");
+
+
         Hashtable<String, String> dict = new Hashtable<String, String>();
+
+        startTime = System.currentTimeMillis();
 
         //Read File
         try {
@@ -197,11 +224,16 @@ public class LetTheUniversesCollide {
             e.printStackTrace();
         }
 
+        endTime = System.currentTimeMillis();
+
+        System.out.println("Reading Hashtable took " + (endTime - startTime) + " milliseconds.");
+/*
         enumValue = dict.elements();
         enumKey = dict.keys();
         while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
             System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
         }
+*/
 
         //find a Hash
         String findKey = new String();
@@ -213,7 +245,7 @@ public class LetTheUniversesCollide {
         } else {
             System.out.println("Not found. Let us guess till we find it ...");
 
-            while (i < 0xFFFF) {
+            while (i < size) {
                 ltuc = new HashPass();
                 if (ltuc.getHash() == findKey) {
                     System.out.println("hash: " + findKey + " " + ltuc.getHash() + " maps to password: " + ltuc.getPassword());

@@ -2,7 +2,7 @@
  * File Name     : HashPass.java
  * Purpose       :
  * Creation Date : 27-10-2013
- * Last Modified : Sun 27 Oct 2013 06:08:05 PM CET
+ * Last Modified : Mon 28 Oct 2013 05:50:48 PM CET
  * Created By    :
  *
  */
@@ -20,7 +20,7 @@ public class HashPass {
 
     HashPass() {
         password = UUID.randomUUID().toString();
-        password = password.substring(28,password.length());      //8byte Kennwort
+        password = password.substring(20,password.length());      // 8byte Kennwort
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             md.update(password.getBytes());
