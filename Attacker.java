@@ -2,7 +2,7 @@
  * File Name     : Attacker.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Mon 28 Oct 2013 08:42:51 PM CET
+ * Last Modified : Mon 28 Oct 2013 10:10:41 PM CET
  * Created By    :
  *
  */
@@ -162,11 +162,9 @@ public class Attacker {
         while (i < size) {
             ltuc = new HashPass();
 
-            //System.out.println("Size of Hashtable: " + wordlist.size());
             if (!wordlist.containsKey(ltuc.hash)) {
                 wordlist.put(ltuc.getHash(), ltuc.getPassword());
                 i++;
-            //System.out.println("Size of Hashtable: " + wordlist.size());
             }
         }
 
@@ -227,7 +225,9 @@ public class Attacker {
         endTime = System.currentTimeMillis();
 
         System.out.println("Reading Hashtable took " + (endTime - startTime) + " milliseconds.");
-/*
+
+/* Print Table
+
         enumValue = dict.elements();
         enumKey = dict.keys();
         while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
@@ -235,37 +235,17 @@ public class Attacker {
         }
 */
 
-/*
-        //find a Hash
-        String findKey = new String();
-
-        findKey = ltuc.getHash();
-
-        if (wordlist.containsKey(findKey)) {
-            System.out.println("Found in Table: hash: " + findKey + " maps to password: " + wordlist.get(findKey));
-        } else {
-            System.out.println("Not found. Let us guess till we find it ...");
-
-            while (i < size) {
-                ltuc = new HashPass();
-                if (ltuc.getHash() == findKey) {
-                    System.out.println("hash: " + findKey + " " + ltuc.getHash() + " maps to password: " + ltuc.getPassword());
-                    i = 0xFFFF;
-                } else {
-                    i++;
-                }
-            }
-        }
-*/
-
         System.out.println("Size of Hashtable: " + wordlist.size());
 
-        /*
+/* Connect to Terminal */
         String hostname = "localhost";
         int port = 1300;
         Socket clientSocket = null;
         PrintWriter out = null;
         BufferedReader in = null;
+
+        String status;
+        String capturedHash;
 
         try {
             clientSocket = new Socket(hostname, port);
@@ -276,24 +256,44 @@ public class Attacker {
             System.exit(1);
         }
 
-        String capturedHash;
-
         i = 1;
 
-        while ((capturedHash = in.readLine()) != null) {
-            System.out.println("Captured Hash: " + capturedHash);
-            if (wordlist.containsKey(capturedHash)) {
-                out.println(wordlist.get(capturedHash));
-                System.out.println(i + " tries " + "Captured Hash: " + capturedHash + " maps to following Password: " + wordlist.get(capturedHash));
-            } else {
-                System.out.println(capturedHash + " Not in Table");
+        try {
+            while ((capturedHash = in.readLine()) != null) {
+                System.out.println("Captured Hash: " + capturedHash);
+                if (wordlist.containsKey(capturedHash)) {
+                    out.println(wordlist.get(capturedHash));
+                    status = in.readLine();
+                    System.out.println(status + " after " + i + " tries " + "Captured Hash: " + capturedHash + " maps to following Password: " + wordlist.get(capturedHash));
+                } else {
+                    System.out.println(capturedHash + " Not in Table");
+/* generate a new table */
+                    int j = 0;
+                    HashPass brute;
+                    while (j < size) {
+                        brute = new HashPass();
+                        if (brute.getHash() == capturedHash) {
+                            System.out.println("hash: " + capturedHash + " " + brute.getHash() + " maps to password: " + brute.getPassword());
+                            out.println(brute.getHash());
+                            status = in.readLine();
+                            System.out.println(status + " after " + j + " tries " + "Captured Hash: " + capturedHash + " maps to following Password: " + brute.getPassword());
+                            break;
+                        } else {
+                            j++;
+                        }
+                    }
+                    out.println("next");
+                    status = in.readLine();
+                    System.out.println(status);
+                }
+                i++;
             }
-            i++;
+/* cleanup */
+            out.close();
+            in.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            System.exit(1);
         }
-
-        out.close();
-        in.close();
-        clientSocket.close();
-        */
     }
 }
