@@ -1,8 +1,8 @@
 /**
- * File Name     : LetTheUniversesCollide.java
+ * File Name     : Attacker.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Mon 28 Oct 2013 06:38:23 PM CET
+ * Last Modified : Mon 28 Oct 2013 07:42:24 PM CET
  * Created By    :
  *
  */
@@ -133,7 +133,7 @@ import java.net.*;
 import java.lang.*;
 
 
-public class LetTheUniversesCollide {
+public class Attacker {
 
     public static void main(String[] args) throws IOException {
 
