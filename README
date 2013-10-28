@@ -8,7 +8,7 @@ git clone https://github.com/mdrone/ltuc.git
 git commit -am 'Kommentar'
 
 # Aenderungen Hochladen
-git push master origin
+git push origin master
 
 
 
