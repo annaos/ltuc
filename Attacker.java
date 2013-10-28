@@ -2,7 +2,7 @@
  * File Name     : Attacker.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Mon 28 Oct 2013 07:42:24 PM CET
+ * Last Modified : Mon 28 Oct 2013 08:42:51 PM CET
  * Created By    :
  *
  */
@@ -135,7 +135,7 @@ import java.lang.*;
 
 public class Attacker {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         HashPass ltuc = new HashPass();
 

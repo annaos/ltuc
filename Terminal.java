@@ -2,17 +2,25 @@
  * File Name     : Terminal.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Mon 28 Oct 2013 09:21:38 AM CET
+ * Last Modified : Mon 28 Oct 2013 09:08:19 PM CET
  * Created By    :
  *
  */
 
+/*
+ * Verbindet sich mit Server auf Port 1024
+ * wartet auf eine Eingabe an der Tastatur, diese wird als Hash (4 Byte)
+ * an den Server gesendet und dort als secret abgespeichert.
+ * Nach der Tastatureingabe, wird auf Port 1300 auf ein Kennwort gewartet
+ * und den zugehoerigen Hash an den Server gesendet, das Ergebnis wird 
+ * wird an den Client (Attacker) zurueckgesendet.
+ */
 
 import java.io.*;
 import java.net.*;
 
 public class Terminal {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         String hostname = "localhost";
         int port = 1024;
@@ -20,6 +28,8 @@ public class Terminal {
         Socket clientSocket = null;
         PrintWriter clientOut = null;
         BufferedReader clientIn = null;
+
+        BufferedReader stdIn = null;
 
 /* Server 
         ServerSocket serverSocket = null;
@@ -54,10 +64,20 @@ public class Terminal {
             System.exit(1);
         }
 
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-
+/* User Keyboard Input */
         String userInput;
         HashPass auth;
+
+        try {
+            stdIn = new BufferedReader(new InputStreamReader(System.in));
+            while ((userInput = stdIn.readLine()) != null) {
+                auth = new HashPass(userInput);
+                clientOut.println(auth.getHash());
+                System.out.println(clientIn.readLine());
+            }
+        } catch (IOException e) {
+            System.exit(1);
+        }
 
         /*
         while ((userInput = stdIn.readLine()) != "\n") {
@@ -66,12 +86,6 @@ public class Terminal {
             System.out.println(clientIn.readLine());
         }
         */
-/* User Keyboard Input */
-        while ((userInput = stdIn.readLine()) != null) {
-            auth = new HashPass(userInput);
-            clientOut.println(auth.getHash());
-            System.out.println(clientIn.readLine());
-        }
 
 /* Online Input 
         String attackerInput;
@@ -102,10 +116,14 @@ public class Terminal {
         }
         */
 
-        clientOut.close();
-        clientIn.close();
-        stdIn.close();
-        clientSocket.close();
+        try {
+            clientOut.close();
+            clientIn.close();
+            stdIn.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            System.exit(1);
+        }
 /*
         serverIn.close();
         serverOut.close();

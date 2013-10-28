@@ -2,7 +2,7 @@
  * File Name     : HashPass.java
  * Purpose       :
  * Creation Date : 27-10-2013
- * Last Modified : Mon 28 Oct 2013 05:50:48 PM CET
+ * Last Modified : Mon 28 Oct 2013 08:43:29 PM CET
  * Created By    :
  *
  */
@@ -17,7 +17,10 @@ public class HashPass {
 
     String password;
     String hash;
-
+/*
+ * Generiere Hash aus zufaelligem Kennwort
+ * schneide Hash ab (die letzten 8 Zeichen)
+ */
     HashPass() {
         password = UUID.randomUUID().toString();
         password = password.substring(20,password.length());      // 8byte Kennwort
@@ -32,7 +35,10 @@ public class HashPass {
             System.out.println("Exception: " + e);
         }
     }
-
+/*
+ * Generiere Hash aus gegebenen Kennwort
+ *
+ */
     HashPass(String s) {
         password = s;
         try {
@@ -46,8 +52,10 @@ public class HashPass {
             System.out.println("Exception: " + e);
         }
     }
-
-
+/*
+ * Kennwort sowie Hashwert zurueckgeben
+ *
+ */
     String getPassword() {
         return password;
     }
@@ -55,20 +63,26 @@ public class HashPass {
     String getHash() {
         return hash;
     }
-
+/*
+ * Hashwert auf die letzten 8 Zeichen kuerzen
+ *
+ */
     void truncate() {
         hash = hash.substring(32,hash.length());
     }
-
+/*
+ * Bytearray in Hexstring umwandeln
+ *
+ */
     public static String bytesToHex(byte[] b) {
         char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
                    '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
 
-        for (int j=0; j<b.length; j++) {
-            buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
-            buf.append(hexDigit[b[j] & 0x0f]);
+        for (int j = 0; j < b.length; j++) {
+            buffer.append(hexDigit[(b[j] >> 4) & 0x0f]);
+            buffer.append(hexDigit[b[j] & 0x0f]);
         }
-        return buf.toString();
+        return buffer.toString();
     }
 }
