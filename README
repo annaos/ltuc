@@ -1,17 +1,29 @@
 #!/usr/bin/env less
 
-git clone https://github.com/mdrone/ltuc.git 
+# Repository herunterladen
+
+    git clone https://github.com/mdrone/ltuc.git 
 
 # Aenderungen machen
 # Kommentieren
 
-git commit -am 'Kommentar'
+    git commit -am 'Kommentar'
 
 # Aenderungen Hochladen
-git push origin master
 
-
+    git push origin master
 
 # Neue Dateien Hinzufuegen
 
-git add ./Datei
+    git add ./Datei
+
+    git commit -am 'Kommentar'
+
+    git push origin master
+
+
+
+
+# Script zum testen mit unterschiedlichen Tabellengroessen
+
+    generator

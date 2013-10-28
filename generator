@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Testen der Laufzeiten
+
+echo "$(date | sed -e 's: :_:g')" >> laufzeit
+
+
+for i in $(seq $1)
+do
+#echo $i
+    java -jar LetTheUniversesCollide.jar $i >> laufzeit
+done

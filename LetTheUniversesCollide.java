@@ -2,7 +2,7 @@
  * File Name     : LetTheUniversesCollide.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Mon 28 Oct 2013 06:16:11 PM CET
+ * Last Modified : Mon 28 Oct 2013 06:38:23 PM CET
  * Created By    :
  *
  */
@@ -235,6 +235,7 @@ public class LetTheUniversesCollide {
         }
 */
 
+/*
         //find a Hash
         String findKey = new String();
 
@@ -255,6 +256,7 @@ public class LetTheUniversesCollide {
                 }
             }
         }
+*/
 
         System.out.println("Size of Hashtable: " + wordlist.size());
 
