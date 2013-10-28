@@ -2,7 +2,7 @@
  * File Name     : Attacker.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Mon 28 Oct 2013 10:10:41 PM CET
+ * Last Modified : Mon 28 Oct 2013 10:36:33 PM CET
  * Created By    :
  *
  */
@@ -172,14 +172,15 @@ public class Attacker {
 
         System.out.println("Generating Hashtable took " + (endTime - startTime) + " milliseconds.");
 
-/*
+/* 
+   Print Table
+
         Enumeration enumValue = wordlist.elements();
         Enumeration enumKey = wordlist.keys();
         while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
             System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
         }
 */
-        //System.out.println("Size of Hashtable: " + wordlist.size());
 
         startTime = System.currentTimeMillis();
 
@@ -226,14 +227,15 @@ public class Attacker {
 
         System.out.println("Reading Hashtable took " + (endTime - startTime) + " milliseconds.");
 
-/* Print Table
+/* 
+   Print Table
+*/
 
-        enumValue = dict.elements();
-        enumKey = dict.keys();
+        Enumeration enumValue = dict.elements();
+        Enumeration enumKey = dict.keys();
         while ((enumValue.hasMoreElements() && enumKey.hasMoreElements())) {
             System.out.println("hashtable keys: " + enumKey.nextElement() + " " + "hashtable values: " + enumValue.nextElement());
         }
-*/
 
         System.out.println("Size of Hashtable: " + wordlist.size());
 
@@ -246,6 +248,12 @@ public class Attacker {
 
         String status;
         String capturedHash;
+
+        try {
+            Thread.sleep(10000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
 
         try {
             clientSocket = new Socket(hostname, port);
