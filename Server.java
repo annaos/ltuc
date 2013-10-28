@@ -2,7 +2,7 @@
  * File Name     : Server.java
  * Purpose       :
  * Creation Date : 26-10-2013
- * Last Modified : Sat 26 Oct 2013 05:50:41 PM CEST
+ * Last Modified : Mon 28 Oct 2013 09:25:25 AM CET
  * Created By    :
  *
  */
@@ -14,24 +14,42 @@ import java.net.*;
 
 public class Server {
     public static void main( String[] args ) {
-        int portNumber = 1024;
+        int port = 1024;
 
-        try (
-            ServerSocket serverSocket = new ServerSocket(portNumber);
+        ServerSocket serverSocket = null;
+        Socket clientSocket = null;
 
-            Socket clientSocket = serverSocket.accept();
+        PrintWriter out = null;
+        BufferedReader in = null;
 
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        try {
+            serverSocket = new ServerSocket(port);
+            clientSocket = serverSocket.accept();
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        } catch (IOException e) {
+            System.err.println("Failed to listen on Port: " + port);
+            System.exit(1);
+        }
 
-            ) {
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    out.println(inputLine);
+        String secret = null;
+        String auth = null;
+
+        try {
+            secret = in.readLine();
+            out.println("Success");
+
+            while ((auth = in.readLine()) != null) {
+                System.out.println("Received Hash: " + auth);
+                if (auth.equals(secret)) {
+                    out.println("Success");
+                } else {
+                    out.println("Failed");
                 }
-            } catch (IOException e) {
-                System.out.println("Exception caught when trying to listen on port " + portNumber + " or listening for a connection");
-                System.out.println(e.getMessage());
             }
+        } catch (IOException e) {
+            System.err.println("Failed to receive Data on Port: " + port);
+            System.exit(1);
+        }
     }
 }

@@ -2,7 +2,7 @@
  * File Name     : LetTheUniversesCollide.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Sun 27 Oct 2013 06:18:44 PM CET
+ * Last Modified : Sun 27 Oct 2013 11:14:51 PM CET
  * Created By    :
  *
  */
@@ -128,17 +128,13 @@
 
 import java.util.Hashtable;
 import java.util.Enumeration;
-import java.io.OutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.*;
 
 
 public class LetTheUniversesCollide {
 
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws IOException {
 
         HashPass ltuc = new HashPass();
 
@@ -229,5 +225,41 @@ public class LetTheUniversesCollide {
         }
 
         System.out.println("Size of Hashtable: " + wordlist.size());
+
+        /*
+        String hostname = "localhost";
+        int port = 1300;
+        Socket clientSocket = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
+
+        try {
+            clientSocket = new Socket(hostname, port);
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for: " + hostname);
+            System.exit(1);
+        }
+
+        String capturedHash;
+
+        i = 1;
+
+        while ((capturedHash = in.readLine()) != null) {
+            System.out.println("Captured Hash: " + capturedHash);
+            if (wordlist.containsKey(capturedHash)) {
+                out.println(wordlist.get(capturedHash));
+                System.out.println(i + " tries " + "Captured Hash: " + capturedHash + " maps to following Password: " + wordlist.get(capturedHash));
+            } else {
+                System.out.println(capturedHash + " Not in Table");
+            }
+            i++;
+        }
+
+        out.close();
+        in.close();
+        clientSocket.close();
+        */
     }
 }
