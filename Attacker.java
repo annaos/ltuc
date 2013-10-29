@@ -2,7 +2,7 @@
  * File Name     : Attacker.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Tue 29 Oct 2013 03:09:05 PM CET
+ * Last Modified : Tue 29 Oct 2013 03:26:09 PM CET
  * Created By    :
  *
  */
@@ -253,13 +253,13 @@ public class Attacker {
         String status;
         String capturedHash;
 
-/* Debug */
+/* Debug 
         try {
             Thread.sleep(1000);
         } catch(InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
+*/
         try {
             clientSocket = new Socket(hostname, port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -280,22 +280,6 @@ public class Attacker {
                     System.out.println(status + " after " + i + " tries " + "Captured Hash: " + capturedHash + " maps to following Password: " + wordlist.get(capturedHash));
                 } else {
                     System.out.println(capturedHash + " Not in Table");
-/* generate a new table 
-                    int j = 0;
-                    HashPass brute;
-                    while (j < size) {
-                        brute = new HashPass();
-                        if (brute.getHash() == capturedHash) {
-                            System.out.println("hash: " + capturedHash + " " + brute.getHash() + " maps to password: " + brute.getPassword());
-                            out.println(brute.getHash());
-                            status = in.readLine();
-                            System.out.println(status + " after " + j + " tries " + "Captured Hash: " + capturedHash + " maps to following Password: " + brute.getPassword());
-                            break;
-                        } else {
-                            j++;
-                        }
-                    }
- */
                     out.println("Next");
                     status = in.readLine();
                     //status = in.readLine();
