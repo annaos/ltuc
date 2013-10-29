@@ -2,7 +2,7 @@
  * File Name     : Attacker.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Tue 29 Oct 2013 09:18:49 AM CET
+ * Last Modified : Tue 29 Oct 2013 09:19:47 AM CET
  * Created By    :
  *
  */
@@ -252,7 +252,7 @@ public class Attacker {
 /* Debug */
         try {
             Thread.sleep(10000);
-        } catch(InterruptedException ex) {
+        } catch(InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
