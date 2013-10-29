@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,6 +23,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class UserInterface {
     private static String com="";//Zeigt, welche Datenstruktur benutzt werden muss
+    public static JTextField hashwert = new JTextField("Hashwert bitte einführen");
     
     public static void hauptFenster(){
         JFrame fenster =new JFrame();      
@@ -62,10 +64,11 @@ public class UserInterface {
         final JComboBox zahlFuellen = new JComboBox();
         zahlFuellen.setModel(new javax.swing.DefaultComboBoxModel(new String[] 
                                                 { "<html>2<sup>8</sup></html>",
-                                                  "2^10",
+                                                  "<html>2<sup>10</sup></html>",
                                                   "<html>2<sup>12</sup></html>",
                                                   "<html>2<sup>14</sup></html>",
-                                                  "2^16","2^18" }));
+                                                  "<html>2<sup>16</sup></html>",
+                                                  "<html>2<sup>18</sup></html>" }));
         JButton fuellen =new JButton("füllen");
         fuellen.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e) {
@@ -76,12 +79,12 @@ public class UserInterface {
         JButton zeigen =new JButton("zeigen");
         zeigen.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e) {
-                    Liste();
+                    liste();
                }
         });
               
-        final JTextField prob = new JTextField("Hashwert bitte einführen");
-        prob.setPreferredSize(new Dimension(295, 15));
+                //JTextField hashwert = new JTextField("Hashwert bitte einführen");
+        hashwert.setPreferredSize(new Dimension(295, 15));
         //dieser Knopf einführt randomen Hashwert in JTextField prob
         JButton randomButton =new JButton("Random Haschwert");
         randomButton.addActionListener(new ActionListener() {
@@ -93,7 +96,7 @@ public class UserInterface {
                         else s=s+"1";
                         if (((i % 4)==3)&&(i!=31)) s=s+" ";
                     }
-                    prob.setText(s);
+                    hashwert.setText(s);
                }
         });
         //Hashwert in der Tabelle suchen
@@ -107,8 +110,14 @@ public class UserInterface {
                         glueckFenster();
                }
         });
+        JButton opferButton =new JButton("Neue Versuch der Opfer");
+        opferButton.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e) {
+                    opferFenster();
+               }
+        });
         //Fenster einfüllen
-        fenster.setSize(530, 260);
+        fenster.setSize(530, 310);
         fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenster.setLayout(new MigLayout("","[][][][]21[]","[]30[]15[]15[]"));
         fenster.add(tableWahlPanel2, "span 5, wrap");
@@ -117,9 +126,10 @@ public class UserInterface {
         fenster.add(label4, "cell 2 1");
         fenster.add(fuellen, "cell 3 1");
         fenster.add(zeigen, "cell 4 1");
-        fenster.add(prob, "cell 0 2 3 1");
+        fenster.add(hashwert, "cell 0 2 3 1");
         fenster.add(probButton, "cell 3 2 2 1");
         fenster.add(randomButton, "cell 0 3 2 1");
+        fenster.add(opferButton, "cell 0 4 4 1");
         fenster.setVisible(true);    
     }
     
@@ -169,7 +179,7 @@ public class UserInterface {
     }
     
     //Tabelle zeigen
-    private static void Liste(){
+    private static void liste(){
         final JFrame fenster =new JFrame("Die Tabelle"); 
         
         Object[] headers = { "Passwort", "Hashwert" };
@@ -200,8 +210,41 @@ public class UserInterface {
         
     }
     
+    public static void opferFenster(){
+        final JFrame fenster =new JFrame();      
+        JLabel label1= new JLabel("Benutzername:");
+        final JTextField login = new JTextField("");
+        login.setPreferredSize(new Dimension(295, 15));        
+        JLabel label2= new JLabel("Passwort:");
+        final JPasswordField passwort = new JPasswordField("");
+        passwort.setPreferredSize(new Dimension(295, 15));
+        JButton sendButton =new JButton("Send");
+        sendButton.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e) {
+                    char[] ch= passwort.getPassword();;
+                    String pass="";
+                    //String hash=String.valueOf(passwort.getPassword().hashCode());
+                    for (int i=0;i<ch.length;i++)
+                       pass=pass+ch[i];
+                    hashwert.setText(pass);
+                    fenster.setVisible(false);
+               }
+        });
+        fenster.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        fenster.setSize(220, 130);
+        fenster.setResizable(false);
+        fenster.setLayout(new MigLayout());
+        fenster.add(label1);
+        fenster.add(login, "wrap");
+        fenster.add(label2);
+        fenster.add(passwort, "wrap");
+        fenster.add(sendButton);
+        fenster.setVisible(true); 
+    }
+    
     public static void main(String[] args) {
         hauptFenster();
+        opferFenster();
         
     }
 }
