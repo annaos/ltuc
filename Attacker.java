@@ -2,7 +2,7 @@
  * File Name     : Attacker.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Mon 28 Oct 2013 10:36:33 PM CET
+ * Last Modified : Tue 29 Oct 2013 09:18:49 AM CET
  * Created By    :
  *
  */
@@ -249,6 +249,7 @@ public class Attacker {
         String status;
         String capturedHash;
 
+/* Debug */
         try {
             Thread.sleep(10000);
         } catch(InterruptedException ex) {

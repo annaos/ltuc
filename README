@@ -21,9 +21,14 @@
 
     git push origin master
 
+# Update herunterladen
+
+    git pull
 
 
 
 # Script zum testen mit unterschiedlichen Tabellengroessen
 
-    generator
+    generator 300
+
+# fuehrt Programm 300 mal aus mit dem Argument 1 bis 300
