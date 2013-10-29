@@ -2,7 +2,7 @@
  * File Name     : Server.java
  * Purpose       :
  * Creation Date : 26-10-2013
- * Last Modified : Mon 28 Oct 2013 09:10:00 PM CET
+ * Last Modified : Tue 29 Oct 2013 03:03:15 PM CET
  * Created By    :
  *
  */
@@ -51,11 +51,25 @@ public class Server {
             System.out.println("Secret Hash: " + secret);
 
             while ((auth = in.readLine()) != null) {
+                if (auth.equals("Next")) {
+                    secret = new HashPass().getHash();
+                    System.out.println("New Secret Hash: " + secret);
+                    out.println("Failed");
+                    out.println(secret);
+                } else {
                 System.out.println("Received Hash: " + auth);
                 if (auth.equals(secret)) {
                     out.println("Success");
-                } else {
+                    break;
+                } 
+                /*else {
+                    System.out.println("Should not be reached");
+                    /*
+                    secret = new HashPass().getHash();
+                    System.out.println("New Secret Hash: " + secret);
                     out.println("Failed");
+                    out.println(secret);
+                    */
                 }
             }
         } catch (IOException e) {

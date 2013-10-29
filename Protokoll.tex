@@ -2,7 +2,7 @@
 % File Name     : Protokoll.tex
 % Purpose       :
 % Creation Date : 26-10-2013
-% Last Modified : Mon 28 Oct 2013 06:50:14 PM CET
+% Last Modified : Tue 29 Oct 2013 01:20:05 PM CET
 % Created By    :
 %
 
@@ -12,12 +12,15 @@
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage{fancyhdr}
+\usepackage{amsmath} 
+\usepackage{graphicx} 
+\usepackage[hidelinks]{hyperref} 
+
 \pagestyle{fancy}
+
 \fancyhead[R]{\today}
 \fancyhead[C]{Andrey,Anna,Oliver}
 \fancyhead[L]{Algorithmen}
-\usepackage{amsmath} 
-
 
 \begin{document}
 
@@ -31,41 +34,72 @@
 \newpage
 \setcounter{tocdepth}{2}
 
-\section{Abstract}
 
-Aufgabe/Sachverhalt/Problemstellung
+\section{Einleitung}
+
+Im Zuge dieser Projektarbeit soll ein Angriff auf ein einfaches Authentifizierungssystem durchgeführt werden.
+Der Angriff soll dabei in zwei Phasen ablaufen, eine Offline-Phase (Precomputation) und eine Online-Phase.
+
+
+\section{Szenario}
+
+Aus der Aufgabenstellung ergibt sich das folgende Szenario:
+[Grafik]
+Ein Terminalnutzer meldet sich mit seinem Kennwort an einem Server an. Das eingegebene Kennwort wird mit dem SHA1-Algorithmus
+gehasht und die letzten 4 Byte dieses Hashes werden an den Server übertragen. Der Server vergleicht diese 4 Byte mit seiner Datenbank
+und gewährt Zugriff, falls der richtige Hash gesendet wurde.
+
+\section{Problemstellung}
+
+
+\section{Umsetzung}
+
+Wie soll Password generiert werden?
 
 Idee/Aufbau
 drei Teilung
 
-Wie soll Password generiert werden?
-Warum UUID?
-% http://en.wikipedia.org/wiki/Universally_unique_identifier#Random_UUID_probability_of_duplicates 
+\subsection{Idee}
 
-Geburtstagsparadoxon
-Rechenaufwand
+\subsection{Designentscheidung}
+
+\subsubsection{Terminal}
+
+Warum UUID?
+
+\subsubsection{Server}
+
+\subsubsection{Angreifer}
 
 Datenstruktur
 Speicherbedarf
 
-Erklaeung der benutzten Bibliotheken:
-Sockets
-Serialisierung
-Hashtable -> Warum?
+Laufzeit Rechenaufwand
 
-\begin{tabular} [h] {||c|l|c||} 
-\hline \rule[-1.5mm]{0pt}{5.5ex} & \normalsize Beschreibung1 & Beschreibung2 \\ 
+\begin{tabular} [h] {||c|c|c|c||} 
+\hline \rule[-1.5mm]{0pt}{5.5ex} Tabellengröße & Generieren  & Schreiben & Lesen in ms\\ 
+\rule[-1.5mm]{0pt}{5.5ex} n & in ms  & in ms & \\ 
 \hline
-\hline \rule[-1.5mm]{0pt}{5.5ex} Fall1 & Zelle1 & Zelle2 \\ 
-\hline \rule[-1.5mm]{0pt}{5.5ex} 2 &  & \\ 
-\hline \rule[-1.5mm]{0pt}{5.5ex} 3 &  & \\ 
-\hline \rule[-1.5mm]{0pt}{5.5ex} 4 &  & \\ 
-\hline \rule[-1.5mm]{0pt}{5.5ex} 5 &  & \\ 
-\hline \rule[-1.5mm]{0pt}{5.5ex} 6 &  & \\ 
-\hline \rule[-1.5mm]{0pt}{5.5ex} 7 &  & \\ 
+\hline \rule[-1.5mm]{0pt}{5.5ex} 1000 &  & & \\ 
+\hline \rule[-1.5mm]{0pt}{5.5ex} 2000 &  & & \\ 
+\hline \rule[-1.5mm]{0pt}{5.5ex} 10000 &  & & \\ 
+\hline \rule[-1.5mm]{0pt}{5.5ex} 100000 &  & & \\ 
+\hline \rule[-1.5mm]{0pt}{5.5ex} 1000000 &  & & \\ 
+\hline \rule[-1.5mm]{0pt}{5.5ex} 2000000 &  & & \\ 
 \hline
 \end{tabular}
 
+[Gnuplot Grafik]
 
+Erklaeung der benutzten Bibliotheken:
+Sockets
+Serialisierung
+Warum Hashtable?
+
+Geburtstagsparadoxon
+
+\section{Quellen}
+
+\nolinkurl{http://en.wikipedia.org/wiki/Universally_unique_identifier#Random_UUID_probability_of_duplicates}
 
 \end{document}

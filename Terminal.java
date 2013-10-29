@@ -2,7 +2,7 @@
  * File Name     : Terminal.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Mon 28 Oct 2013 09:44:43 PM CET
+ * Last Modified : Tue 29 Oct 2013 03:13:19 PM CET
  * Created By    :
  *
  */
@@ -86,10 +86,17 @@ public class Terminal {
 /* Online (Attacker) Input */
 
         try {
-            attackerInput = serverIn.readLine();
-            fakeAuth = new HashPass(attackerInput);
-            clientOut.println(fakeAuth.getHash());
-            serverOut.println(clientIn.readLine()); 
+            while ((attackerInput = serverIn.readLine()) != null) {
+                if (attackerInput.equals("Next")) {
+                    clientOut.println(attackerInput);
+                    serverOut.println(clientIn.readLine());
+                    serverOut.println(clientIn.readLine());
+                } else {
+                    fakeAuth = new HashPass(attackerInput);
+                    clientOut.println(fakeAuth.getHash());
+                    serverOut.println(clientIn.readLine()); 
+                }
+            }
         } catch (IOException e) {
             System.exit(1);
         }

@@ -2,7 +2,7 @@
  * File Name     : Attacker.java
  * Purpose       :
  * Creation Date : 23-10-2013
- * Last Modified : Tue 29 Oct 2013 09:19:47 AM CET
+ * Last Modified : Tue 29 Oct 2013 03:09:05 PM CET
  * Created By    :
  *
  */
@@ -143,8 +143,6 @@ public class Attacker {
 
         int size = 0;
 
-        System.out.println( "args = " + java.util.Arrays.toString( args ) );
-
         if (args.length == 0) {
             size = 0xFFFFF;             // 2^20
         } else {
@@ -172,6 +170,8 @@ public class Attacker {
 
         System.out.println("Generating Hashtable took " + (endTime - startTime) + " milliseconds.");
 
+        System.out.println("Size of Hashtable: " + wordlist.size());
+
 /* 
    Print Table
 
@@ -182,6 +182,8 @@ public class Attacker {
         }
 */
 
+
+/* Serialisierung
         startTime = System.currentTimeMillis();
 
         //Save File
@@ -203,11 +205,12 @@ public class Attacker {
         System.out.println("Saving Hashtable took " + (endTime - startTime) + " milliseconds.");
 
 
+        //Read File
         Hashtable<String, String> dict = new Hashtable<String, String>();
 
         startTime = System.currentTimeMillis();
 
-        //Read File
+
         try {
             FileInputStream inputStream = new FileInputStream("table");
 
@@ -226,10 +229,10 @@ public class Attacker {
         endTime = System.currentTimeMillis();
 
         System.out.println("Reading Hashtable took " + (endTime - startTime) + " milliseconds.");
+*/
 
 /* 
    Print Table
-*/
 
         Enumeration enumValue = dict.elements();
         Enumeration enumKey = dict.keys();
@@ -238,6 +241,7 @@ public class Attacker {
         }
 
         System.out.println("Size of Hashtable: " + wordlist.size());
+*/
 
 /* Connect to Terminal */
         String hostname = "localhost";
@@ -251,7 +255,7 @@ public class Attacker {
 
 /* Debug */
         try {
-            Thread.sleep(10000);
+            Thread.sleep(1000);
         } catch(InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -276,7 +280,7 @@ public class Attacker {
                     System.out.println(status + " after " + i + " tries " + "Captured Hash: " + capturedHash + " maps to following Password: " + wordlist.get(capturedHash));
                 } else {
                     System.out.println(capturedHash + " Not in Table");
-/* generate a new table */
+/* generate a new table 
                     int j = 0;
                     HashPass brute;
                     while (j < size) {
@@ -291,9 +295,11 @@ public class Attacker {
                             j++;
                         }
                     }
-                    out.println("next");
+ */
+                    out.println("Next");
                     status = in.readLine();
-                    System.out.println(status);
+                    //status = in.readLine();
+                    //System.out.println(status);
                 }
                 i++;
             }
